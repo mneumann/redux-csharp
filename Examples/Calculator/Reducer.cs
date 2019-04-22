@@ -10,67 +10,40 @@ namespace Examples.Calculator
         {
             switch (action)
             {
-                case CalculatorAction.EnterAction enterAction:
+                case CalculatorAction.PushNumberAction pushNumberAction:
                     {
                         var newNumberStack = oldState.CloneNumberStack();
-                        if (oldState.CurrentNumberString.Length > 0)
-                        {
-                            newNumberStack.Push(oldState.CurrentNumber);
-                        }
-                        return new CalculatorState("", newNumberStack);
+                        newNumberStack.Push(pushNumberAction.Number);
+                        return new CalculatorState(newNumberStack);
                     }
 
-                case CalculatorAction.BinaryOperationAction binaryOperationAction:
+                case CalculatorAction.PopNumberAction popNumberAction:
                     {
                         var newNumberStack = oldState.CloneNumberStack();
-                        if (oldState.CurrentNumberString.Length > 0)
-                        {
-                            newNumberStack.Push(oldState.CurrentNumber);
-                        }
-                        var arg2 = newNumberStack.Pop();
-                        var arg1 = newNumberStack.Pop();
-                        switch (binaryOperationAction.BinaryOperation)
-                        {
-                            case BinaryOperation.ADD:
-                                newNumberStack.Push(arg1 + arg2);
-                                break;
-                            case BinaryOperation.SUB:
-                                newNumberStack.Push(arg1 - arg2);
-                                break;
-                            case BinaryOperation.MUL:
-                                newNumberStack.Push(arg1 * arg2);
-                                break;
-                            case BinaryOperation.DIV:
-                                newNumberStack.Push(arg1 / arg2);
-                                break;
-                            default:
-                                throw new NotSupportedException();
-                        }
-                        return new CalculatorState("", newNumberStack);
+                        newNumberStack.Pop();
+                        return new CalculatorState(newNumberStack);
                     }
 
-                case CalculatorAction.TypeDotAction typeDotAction:
-                    {
-                        if (oldState.CurrentNumberString.EndsWith("."))
-                        {
-                            throw new NotSupportedException();
-                        }
-                        return new CalculatorState(
-                                oldState.CurrentNumberString + ".",
-                                oldState.NumberStack);
-                    }
-
-                case CalculatorAction.TypeDigitAction typeDigitAction:
-                    {
-                        return new CalculatorState(
-                                oldState.CurrentNumberString + typeDigitAction.Digit.ToString(),
-                                oldState.NumberStack);
-                    }
-
+                case CalculatorAction.AddAction addAction:
+                    return this.ApplyBinaryOp(oldState, (a, b) => a + b);
+                case CalculatorAction.SubAction subAction:
+                    return this.ApplyBinaryOp(oldState, (a, b) => a - b);
+                case CalculatorAction.MulAction mulAction:
+                    return this.ApplyBinaryOp(oldState, (a, b) => a * b);
+                case CalculatorAction.DivAction divAction:
+                    return this.ApplyBinaryOp(oldState, (a, b) => a / b);
                 default:
                     return oldState;
             }
+        }
 
+        private CalculatorState ApplyBinaryOp(CalculatorState oldState, Func<float, float, float> operation)
+        {
+            var newNumberStack = oldState.CloneNumberStack();
+            var arg2 = newNumberStack.Pop();
+            var arg1 = newNumberStack.Pop();
+            newNumberStack.Push(operation.Invoke(arg1, arg2));
+            return new CalculatorState(newNumberStack);
         }
     }
 }

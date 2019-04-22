@@ -4,6 +4,7 @@ namespace Examples.Calculator
 
     public class CalculatorStore : Store<CalculatorState, CalculatorAction, CalculatorReducer>
     {
+        public CalculatorStore() : base(new CalculatorState(), new CalculatorReducer()) { }
         public CalculatorStore(CalculatorState initialState, CalculatorReducer reducer) : base(initialState, reducer)
         {
         }

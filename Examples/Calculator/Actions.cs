@@ -3,41 +3,37 @@ namespace Examples.Calculator
     using System;
     using Redux.Csharp;
 
-    public enum BinaryOperation
-    {
-        ADD,
-        SUB,
-        MUL,
-        DIV
-    }
-
     public abstract class CalculatorAction : IReduxAction
     {
-        public class BinaryOperationAction : CalculatorAction
+        public class PushNumberAction : CalculatorAction
         {
-            public readonly BinaryOperation BinaryOperation;
+            public readonly float Number;
 
-            public BinaryOperationAction(BinaryOperation binaryOperation)
+            public PushNumberAction(float number)
             {
-                this.BinaryOperation = binaryOperation;
+                this.Number = number;
             }
         }
 
-        public class EnterAction : CalculatorAction
+        public class PopNumberAction : CalculatorAction
         {
         }
 
-        public class TypeDotAction : CalculatorAction
+        public class AddAction : CalculatorAction
         {
         }
 
-        public class TypeDigitAction : CalculatorAction
+        public class SubAction : CalculatorAction
         {
-            public readonly int Digit;
-            public TypeDigitAction(int digit)
-            {
-                this.Digit = (digit >= 0 && digit <= 9) ? digit : throw new ArgumentOutOfRangeException(nameof(digit));
-            }
         }
+
+        public class MulAction : CalculatorAction
+        {
+        }
+
+        public class DivAction : CalculatorAction
+        {
+        }
+
     }
 }
