@@ -1,4 +1,4 @@
-namespace Redux.Csharp
+namespace Redux
 {
     public interface IState
     {

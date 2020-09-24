@@ -1,6 +1,6 @@
 namespace Examples.Calculator
 {
-    using Redux.Csharp;
+    using Redux;
     using System;
     using System.Collections.Generic;
 

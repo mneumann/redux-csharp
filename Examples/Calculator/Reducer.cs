@@ -1,7 +1,7 @@
 namespace Examples.Calculator
 {
     using System;
-    using Redux.Csharp;
+    using Redux;
     using System.Collections.Generic;
 
     public class CalculatorReducer : IReducer<CalculatorState, CalculatorAction>

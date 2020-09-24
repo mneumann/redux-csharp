@@ -1,4 +1,4 @@
-namespace Redux.Csharp
+namespace Redux
 {
     using System;
 
@@ -7,28 +7,28 @@ namespace Redux.Csharp
         where ACTION : IReduxAction
         where REDUCER : IReducer<STATE, ACTION>
     {
-        private STATE currentState;
-        private REDUCER reducer;
+        private STATE state;
+        private readonly REDUCER reducer;
 
-        public event EventHandler<STATE> OnStateUpdate;
+        public event EventHandler<STATE> OnStateChanged;
 
         public Store(STATE initialState, REDUCER reducer)
         {
-            this.currentState = initialState;
+            this.state = initialState;
             this.reducer = reducer;
         }
 
         public STATE GetState()
         {
-            return this.currentState;
+            return this.state;
         }
 
         public void Dispatch(ACTION action)
         {
             lock (this)
             {
-                this.currentState = this.reducer.Reduce(this.currentState, action);
-                this.OnStateUpdate?.Invoke(this, this.currentState);
+                this.state = this.reducer.Reduce(this.state, action);
+                this.OnStateChanged?.Invoke(this, this.state);
             }
         }
     }

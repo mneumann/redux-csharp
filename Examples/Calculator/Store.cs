@@ -1,6 +1,6 @@
 namespace Examples.Calculator
 {
-    using Redux.Csharp;
+    using Redux;
 
     public class CalculatorStore : Store<CalculatorState, CalculatorAction, CalculatorReducer>
     {
